@@ -1,0 +1,26 @@
+{% set current_price = product.price_offer > 0 ? product.price_offer : product.price %}
+{% set old_price     = product.price_offer > 0 ? product.price : false %}
+
+{% if product.has_variation and product.has_other_prices %}
+    <span class="product-has-variants">
+        {{ Translation('a_partir_de') }}
+    </span>
+{% endif %}
+
+<div class="price display-cash">
+
+    {% if old_price %}
+        <span class="old-price">
+            {{ settings.currency }} {{ old_price | currency }}
+        </span>
+    {% endif %}
+
+    <span class="current-price">
+        {{ settings.currency }} {{ current_price | currency }}
+    </span>
+
+    <span class="product-installments">
+        {{ product.payment }}
+    </span>
+
+</div>

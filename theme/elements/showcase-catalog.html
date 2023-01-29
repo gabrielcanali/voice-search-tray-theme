@@ -1,0 +1,11 @@
+<div class="showcase-catalog">
+    <ul class="list-product flex f-wrap">
+        {% for item in products %}
+
+            <li class="item flex">
+                {% element 'snippets/product' { 'product' : item } %}
+            </li>
+
+        {% endfor %}
+    </ul>
+</div>

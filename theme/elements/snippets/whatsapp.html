@@ -1,0 +1,51 @@
+{% set local = local | default('inline') %}
+
+{% if include_text is not defined %}
+    {% set include_text = false %}
+{% endif %}
+
+{% if include_icon is not defined %}
+    {% set include_icon = true %}
+{% endif %}
+
+{% if number != '' %}
+
+
+    {% set html_entities_encode_chars = {
+        '%26aacute%3B' : '%C3%A1',      '%26agrave%3B': '%C3%A0',       '%26acirc%3B' : '%C3%A2',       '%26atilde%3B': '%C3%A3',
+        '%26eacute%3B' : '%C3%A9',      '%26egrave%3B': '%C3%A8',       '%26ecirc%3B' : '%C3%AA',       '%26iacute%3B': '%C3%AD',
+        '%26igrave%3B' : '%C3%AC',      '%26icirc%3B' : '%C3%AE',       '%26oacute%3B': '%C3%B3',       '%26ograve%3B': '%C3%B2',
+        '%26ocirc%3B'  : '%C3%B4',      '%26otilde%3B': '%C3%B5',       '%26uacute%3B': '%C3%BA',       '%26ugrave%3B': '%C3%B9',
+        '%26ucirc%3B'  : '%C3%BB',      '%26ccedil%3B': '%C3%A7',       '%26Aacute%3B': '%C3%81',       '%26Agrave%3B': '%C3%80',
+        '%26Acirc%3B'  : '%C3%82',      '%26Atilde%3B': '%C3%83',       '%26Eacute%3B': '%C3%89',       '%26Egrave%3B': '%C3%88',
+        '%26Ecirc%3B'  : '%C3%8A',      '%26Iacute%3B': '%C3%8D',       '%26Igrave%3B': '%C3%8C',       '%26Icirc%3B' : '%C3%8E',
+        '%26Oacute%3B' : '%C3%93',      '%26Ograve%3B': '%C3%92',       '%26Ocirc%3B' : '%C3%94',       '%26Otilde%3B': '%C3%95',
+        '%26Uacute%3B' : '%C3%9A',      '%26Ugrave%3B': '%C3%99',       '%26Ucirc%3B' : '%C3%9B',       '%26Ccedil%3B': '%C3%87'
+    } %}
+
+    {% set whatsapp_number_unformatted = number | replace({'(': '', ')': '', ' ':'', '-': ''}) %}
+
+    {% if '' is not empty %}
+        {% set message = settings.whatsapp_button_message | url_encode | replace(html_entities_encode_chars) %}
+        {% set link = "https://wa.me/55#{whatsapp_number_unformatted}?text=#{message}"%}
+    {% else %}
+        {% set link = "https://wa.me/55#{whatsapp_number_unformatted}" %}
+    {% endif %}
+
+    <a href="{{ link }}" target="_blank" rel="noopener noreferrer" title="WhatsApp: {{ number }}">
+
+        {% if include_icon %}
+            <i class="icon icon-whatsapp v-align-middle"></i>
+        {% endif %}
+
+        {% if include_text %}
+            WhatsApp:
+        {% endif %}
+
+        {{ number }}
+    </a>
+
+
+{% endif %}
+
+

@@ -1,2 +1,10 @@
 # voice-search-tray-theme
-An implementation study of a voice search in the Tema Padrão 2.0 on the Tray platform
+An implementation study of a voice search in themes of Tray platform
+
+## General Info
+
+`...`
+
+## How to
+
+`...`

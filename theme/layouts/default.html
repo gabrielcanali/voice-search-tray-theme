@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-br" data-tray-theme="{{ settings.theme_name }}" data-tray-theme-version="" data-files="{{ utils.assets_version }}" data-store="{{ store.id }}" class="page-{{ pages.current }}">
+    <head>
+
+        {# Minified variable is used for helping development #}
+        {% set minified = true %}
+        
+        {{ html.charset() }}
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport"              content="width=device-width, initial-scale=1">
+        <meta name="theme-color"           content="{{ settings.color_primary_medium }}">
+
+        {% element 'head-metas' %}
+        {% element 'css-variables' %}
+        {% element 'styles' { minified : minified } %}
+
+        <!-- # Voice Search  -->
+
+        <!-- ## Search Style -->
+        <link href="{{ asset('css/voice-search.css') }}" type="text/css" rel="stylesheet">
+        <!-- END Search Style  -->
+
+        <!-- ## Google Material Icons -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <!-- END Google Material Icons -->
+
+        <!-- END Voice Search  -->
+
+        {{ tray.analytics }}
+        {{ googleTagManager.header(pages.current, tagManagerData) }}
+
+    </head>
+    <body>
+
+        {{ googleTagManager.top(pages.current, tagManagerData) }}
+        {% element 'snippets/modals-theme' %}
+
+        <div class="overlay-shadow"></div>
+        <div class="application">
+
+            {% element 'snippets/menu-mobile' %}
+            {% element 'header' %}
+
+            <main class="site-main">
+                {% if not ('home' in pages.current) %}
+                <div class="page-content {{ pages.current in ['catalog', 'home', 'search'] ? ' not-padding' }}">
+                {% endif %}
+
+                    {% if "central" in pages.current %}
+
+                        <div class="container">
+                            <div class="line-panel flex">
+                                {%  element 'sidebar-central' %}
+                                <div class="col-panel">
+                                    {{ content_for_layout }}
+                                </div>
+                            </div>
+                        </div>
+
+                    {% elseif 'home' in pages.current %}
+
+                        {{ content_for_layout }}
+
+                    {% else %}
+
+                        {% set special_pages = [
+                            'listas',
+                            'depoimentos-de-clientes',
+                            'noticias'
+                        ] %}
+
+                        {% set title = '' %}
+
+                        {% for page in pages.custom %}
+                            {% if ('empresa' in page.slug and pages.current == 'company') or (pages.current == page.slug and page.slug not in special_pages) %}
+                                {% set title = page.name %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="container {% if title != '' %} is-custom-page {% endif %}">
+
+                            {% if title != '' %}
+                                <div class="page-title">
+                                    <span class="text">
+                                        {{ title }}
+                                    </span>
+                                </div>
+                            {% endif %}
+
+                            {{ content_for_layout }}
+
+                        </div>
+
+                    {% endif %}
+                {% if not pages.current == 'home' %}
+                </div>
+                {% endif %}
+            </main>
+
+            {% element 'footer' %}
+
+            {% if settings.show_whatsapp_button %}
+                {% element 'snippets/whatsapp' { 'local': 'floating' } %}
+            {% endif %}
+
+        </div>
+        <div>
+            {% element 'snippets/messages' %}
+        </div>
+        
+        {% element 'snippets/pageview' %}
+        {% element 'snippets/modal' %}
+
+        {% element 'scripts' { minified : minified } %}
+
+        {{ store.chat }}
+        {{ googleTagManager.bottom(pages.current, tagManagerData) }}
+
+        <!-- # Voice Search  -->
+
+        <!-- ## Search Script -->
+        <script src="{{ asset('js/voice-search.js') }}"></script>
+        <!-- END Search Script  -->
+
+        <!-- END Voice Search  -->
+
+    </body>
+</html>

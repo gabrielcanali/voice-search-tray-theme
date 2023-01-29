@@ -1,0 +1,76 @@
+{% if settings.show_product_seals_on_listing %}
+
+    {% set discount = product.price_offer > 0 ? (100 - (product.price_offer / product.price) * 100) : false %}
+    {% set tags_count = 0 %}
+
+    {% if product.new %}
+        {% set tags_count = tags_count + 1 %}
+    {% endif %}
+
+    {% if product.featured %}
+        {% set tags_count = tags_count + 1 %}
+    {% endif %}
+
+    {% if product.additional_button and settings.enable_extra_product_tag %}
+        {% set tags_count = tags_count + 1 %}
+    {% endif %}
+
+    {% if product.ProgressiveDiscounts or discount %}
+        <div class="product-tags-circle">
+
+            {% if discount %}
+                <div class="tag-circle discount">
+                    <span class="discount-value">
+                        -{{ discount | number_format }}%
+                    </span>
+                </div>
+            {% endif %}
+
+            {% if product.ProgressiveDiscounts %}
+                <div class="tag-circle progressive-discount" title="Produto com desconto progressivo">
+                    <i class="icon icon-discount"></i>
+                </div>
+            {% endif %}
+
+        </div>
+    {% endif %}
+
+    {% if product.new or product.featured or product.free_shipping or product.additional_button or discount %}
+        <div class="product-tags {% if product.free_shipping -%} has-free-shipping-tag {%- endif %}" data-tags-count="{{ tags_count > 4 ? 4 : tags_count }}">
+            {% set replaceTags = {'src=': 'width="119" height="22" alt="Selo" src='} %}
+            {% if product.new and Image('new') %}
+                <div class="tag new">
+                    {{ Image('new') | replace(replaceTags) }}
+                </div>
+            {% endif %}
+
+            {% if product.featured and Image('featured') %}
+                <div class="tag featured">
+                    {{ Image('featured') | replace(replaceTags) }}
+                </div>
+            {% endif %}
+
+            {% if product.free_shipping and Image('free_shipping')  %}
+                <div class="tag free-shipping">
+                    {{ Image('free_shipping') | replace(replaceTags) }}
+                </div>
+            {% endif %}
+
+            {# {% if tags_count < 5 and discount %}
+                <div class="tag discount">
+                    <span class="tag-text">
+                        {{ discount | number_format }}% Desc
+                    </span>
+                </div>
+            {% endif %} #}
+
+            {% if product.additional_button and Image('additional_button') %}
+                <div class="tag extra">
+                    {{ Image('additional_button') | replace(replaceTags) }}
+                </div>
+            {% endif %}
+
+        </div>
+    {% endif %}
+
+{% endif %}
