@@ -1,0 +1,19 @@
+{% set variants_quantities = [] %}
+
+{% if product.variants.double_variant %}
+
+    {% for item in product.variants.sku | first %}
+        {% for subitem in item.sku | first %}
+            {% set variants_quantities = variants_quantities | merge({ ('variant_id_' ~ subitem.id) : settings.without_stock_sale ? 999999 : item.stock }) %}
+        {% endfor %}
+    {% endfor %}
+
+{% else %}
+
+    {% for item in product.variants.sku | first %}
+        {% set variants_quantities = variants_quantities | merge({ ('variant_id_' ~ item.id) : settings.without_stock_sale ? 999999 : item.stock }) %}
+    {% endfor %}
+
+{% endif %}
+
+<input type="hidden" id="product_variants_quantities" value="{{ variants_quantities | json_encode() | escape }}">

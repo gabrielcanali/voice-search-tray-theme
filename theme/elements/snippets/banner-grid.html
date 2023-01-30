@@ -1,0 +1,31 @@
+{% if banners.extra2 or banners.extra3 %}
+    <div class="container">
+        <div class="banners-grid flex justify-between {% if(banners.extra2 and banners.extra3) %} two {% endif %}">
+
+            {% if banners.extra2 %}
+                <div class="item">
+
+                    {% element 'snippets/banner' {
+                        image    : banners.extra2,
+                        padding  : true
+                    } %}
+
+                </div>
+            {% endif %}
+
+            {% if banners.extra3 %}
+                <div class="item">
+
+                    {% element 'snippets/banner' {
+                        image    : banners.extra3,
+                        padding  : true
+                    } %}
+
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+{% endif %}
+
+

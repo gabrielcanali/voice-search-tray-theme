@@ -1,0 +1,45 @@
+{% if paginate.params.pageCount > 1 %}
+    <ul class="pagination flex align-center">
+
+        {{ paginate.first('<span class="icons"><i class="icon icon-arrow-left"></i><i class="icon icon-arrow-left"></i></span><span class="text">Primeira p&aacute;gina</span>', {
+            'escape' : false,
+            'tag'    : 'li',
+            'title'  : 'Primeira p&aacute;gina',
+            'class'  : 'page first'
+        }) }}
+
+        {# {% if paginate.hasPrev %}
+            {{ paginate.prev('<i class="icon icon-arrow-left"></i>', {
+                'escape' : false,
+                'tag'    : 'li',
+                'title'  : 'P&aacute;gina anterior',
+                'class'  : 'page prev'
+            }) }}
+        {% endif %} #}
+     
+        {{ paginate.numbers({
+            'modulus'      : 3,
+            'separator'    : false,
+            'tag'          : 'li',
+            'class'        : 'page',
+            'currentClass' : 'current',
+        }) }}
+     
+        {# {% if paginate.hasNext %}
+            {{ paginate.next('<i class="icon icon-arrow-right"></i>', {
+                'escape' : false,
+                'tag'    : 'li',
+                'title'  : 'Pr&oacute;xima anterior',
+                'class'  : 'page next'
+            }) }}
+        {% endif %} #}
+
+        {{ paginate.last('<span class="icons"><i class="icon icon-arrow-right"></i><i class="icon icon-arrow-right"></i></span><span class="text">&Uacute;ltima p&aacute;gina</span>',{
+            'escape' : false,
+            'tag'    : 'li',
+            'title'  : '&Uacute;ltima p&aacute;gina',
+            'class'  : 'page last'
+        }) }}
+
+    </ul>
+{% endif %}

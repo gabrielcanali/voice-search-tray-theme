@@ -1,0 +1,21 @@
+{% if utils.is_mobile %}
+    {% set banner_id = 'extra5' %}
+{% else %}
+    {% set banner_id = 'extra4' %}
+{% endif %}
+
+{% set banner = banners[banner_id] %}
+
+{% if banner %}
+    <div class="container">
+        <div class="banner-line">
+
+            {% element 'snippets/banner' {
+                image    : banner,
+                padding  : true,
+                notLazy  : true 
+            } %}
+
+        </div>
+    </div>
+{% endif %}

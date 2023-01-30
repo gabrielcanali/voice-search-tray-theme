@@ -1,0 +1,49 @@
+{% set slideshow = utils.is_mobile ? banners.extra1 : banners.home %}
+{% if slideshow %}
+
+    {% set slideConfigs = {
+        'stopOnHover' : (settings.banner_home_stop_hover ? true : false),
+        'timer'       : 10000,
+        'isMobile'    : utils.is_mobile
+    } %}
+
+    <div class="banner-home" data-settings="{{ slideConfigs | json_encode() | escape }}">
+        {% if slideshow.type == 'javascript' %}
+
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for slide in slideshow.slides %}
+                        {% set lazyIndex = loop.index == 1 ? false : true %}
+                        <div class="swiper-slide item">
+                            {% element 'snippets/banner' {
+                                image    : slide,
+                                swiper   : lazyIndex,
+                                notLazy  : lazyIndex,
+                                padding  : true,
+                                location : 'banner-home'
+                            } %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="dots">
+                    {% for list in slideshow.slides %}
+                        <div class="dot{{ loop.index == 1 ? ' dot-active' }}"></div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        {% else %}
+
+            <div class="item">
+                {% element 'snippets/banner' {
+                    image    : slideshow,
+                    swiper   : false,
+                    padding  : true,
+                    location : 'banner-home'
+                } %}
+            </div>
+
+        {% endif %}
+    </div>
+
+{% endif %}

@@ -1,0 +1,19 @@
+<ul class="payment-list flex f-wrap">
+
+    {% if paymentMethods.credit | length %}
+        {% for payment in paymentMethods.credit %}
+            <li class="payment-form">
+                <img class="lazyload" data-src="{{ payment.thumbnail.url }}" alt="{{ payment.display_name }}">
+            </li>
+        {% endfor %}
+    {% endif %}
+
+    {% if paymentMethods.order | length %}
+        {% for payment in paymentMethods.order %}
+            <li class="payment-form">
+                <img class="lazyload" data-src="{{ payment.thumbnail.url }}" alt="{{ payment.display_name }}">
+            </li>
+        {% endfor %}
+    {% endif %}
+
+</ul>

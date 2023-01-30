@@ -1,0 +1,103 @@
+{% set more_quantity = 6 %}
+
+{% if categories | length > more_quantity %}
+    {% set show_categories = categories | slice(0, more_quantity) %}
+    {% set more_categories = categories | slice(more_quantity) %}
+{% else %}
+    {% set show_categories = categories %}
+    {% set more_categories = null %}
+{% endif %}
+
+<nav class="nav">
+    <div class="container">
+        <ul class="list flex {% if categories | length > 4 %} justify-between {% else %} justify-center {% endif %}">
+
+            {% for category in show_categories %}
+                <li class="first-level {%- if category.children %} sub {%- endif %}">
+                    
+                    <a href="{{ category.link }}" title="{{ category.name }}">
+                        <div class="name">
+                            {{ category.name }}
+                        </div>
+                    </a>
+                    
+                    {% if category.children %}
+                    <ul class="sub-list second-level">
+                    
+                        <a href="{{ category.link }}" title="{{ category.name }}">{{ category.name }}</a>
+
+                        {% for level2 in category.children %}
+
+                            <li {% if level2.children %} class="sub" {% endif %}>
+                                
+                                <a href="{{ level2.link }}" title="{{ level2.name }}">{{ level2.name }}</a>
+                            
+                                {% if level2.children %}
+                                <ul class="sub-list third-level">
+                                    {% for level3 in level2.children %}
+                                    <li>
+                                        <a href="{{ level3.link }}" title="{{ level3.name }}">{{ level3.name }}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %} 
+
+                            </li>
+
+                        {% endfor %}                        
+
+                    </ul>
+                    {% endif %} 
+                    
+                </li>
+            {% endfor %}
+
+            {% if more_categories %}
+                <li class="first-level sub">
+
+                    <span role="button" title="Departamentos">
+                        <div class="name">
+                            + Categorias
+                        </div>
+                    </span>
+
+                    <ul class="sub-list second-level">                    
+                        {% for category in more_categories %}                            
+                            <li>                                
+                                <a href="{{ category.link }}" title="{{ category.name }}">{{ category.name }}</a>
+                                
+                                {% if category.children %}
+                                <ul class="sub-list third-level">
+
+                                    {% for level2 in category.children %}            
+                                        <li>                                            
+                                            <a href="{{ level2.link }}" title="{{ level2.name }}">{{ level2.name }}</a>
+                                        
+                                            {% if level2.children %}
+                                            <ul>
+                                                {% for level3 in level2.children %}
+                                                <li>
+                                                    <a href="{{ level3.link }}" title="{{ level3.name }}">
+                                                        {{ level3.name }}
+                                                    </a>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% endif %} 
+
+                                        </li>            
+                                    {% endfor %}                        
+
+                                </ul>
+                                {% endif %} 
+
+                            </li>
+                        {% endfor %} 
+                    </ul> 
+                                       
+                </li>
+            {% endif %}
+
+        </ul>
+    </div>
+</nav>

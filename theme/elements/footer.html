@@ -1,0 +1,170 @@
+{% set email = Translation('ag_email_1') %}
+{% set whatsappNumber = Translation('ag_telefone_3') %}
+{% set phone = Translation('ag_telefone_1') %}
+{% set phone2 = Translation('ag_telefone_2') %}
+
+<footer class="footer {% if 'home' not in pages.current %} with-border {% endif %}">
+
+    {% if settings.news_active %}
+    <div class="footer-main footer-padding">
+        <div class="container"> 
+            
+            <div class="newsletter flex justify-between align-center">
+
+                <div class="info flex align-center">
+                    <div class="text">
+                        <div class="first">Cadastre-se em nossa newsletter</div>
+                        <div class="last">e receba novidades e promo&ccedil;&otilde;es</div>
+                    </div>
+                </div>
+
+                <form class="form" action="/mvc/store/newsletter/" method="post">
+                    <input type="hidden" name="loja" value="{{ store.id }}">
+                    <input type="email" class="field" name="email" placeholder="Digite seu e-mail" required spellcheck="false" autocomplete="off">
+                    <button type="submit" class="button news-button" title="Cadastrar" aria-label="Cadastrar">
+                        <span>Cadastre-se</span>
+                        <i class="icon icon-arrow-right"></i>
+                    </button>
+                </form>
+
+            </div>            
+
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="cols">
+        <div class="container flex justify-between f-wrap">
+
+            <div class="box logo-box">
+
+                {% set logoStore = Image('logo_loja') %}
+                {% if logoStore %}
+                    <a class="logo" href="{{ store.url }}" title="{{ store.name }}" aria-label="{{ store.name }}">
+                        {{ logoStore | replace({'src=': 'width="222" height="36" src='}) }}
+                    </a>
+                {% else %}
+                    <a class="logo" href="{{ store.url }}" title="{{ store.name }}">
+                        <span class="title-store">{{ store.name }}</span>
+                    </a>
+                {% endif %}
+
+                <div class="social-media flex align-center">
+                    {% element 'snippets/social-media' %}
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="title">Institucional {{ icon }}</div>
+                <div class="overflow">
+                    <ul class="list">
+                        {% for custom in pages.custom %}
+                        <li>
+                            <a href="{{ custom.url }}" title="{{ custom.name }}">{{ custom.name }}</a>
+                        </li>
+                        {% endfor %}
+                        <li>
+                            <a href="{{ links.contact }}" title="Fale Conosco">Fale Conosco</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="box box-infos">
+                <div class="title">Atendimento {{ icon }}</div>
+                <div class="overflow">
+                    <ul class="list"> 
+
+                        {% if phone %}
+                        {% set link = phone | replace({'(': '', ')': '', '-': '', ' ': ''}) %}
+                        <li>
+                            <a href="tel:{{ link }}" title="Telefone: {{ phone }}">
+                                <i class="icon icon-phone v-align-middle"></i>
+                                {{ phone }}
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if phone2 %}
+                        {% set link = phone2 | replace({'(': '', ')': '', '-': '', ' ': ''}) %}
+                        <li>
+                            <a href="tel:{{ link }}" title="Telefone: {{ phone2 }}">
+                                <i class="icon icon-phone v-align-middle"></i>
+                                {{ phone2 }}
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% if whatsappNumber %}
+                        <li>
+                            {% element 'snippets/whatsapp' { 'number': whatsappNumber, 'include_text' : false } %}
+                        </li>
+                        {% endif %}
+                        
+                        {% if email %}
+                        <li>
+                            <a href="mailto:{{ email }}" title="Email: {{ email }}">
+                                <i class="icon icon-email v-align-middle"></i>
+                                {{ email }}
+                            </a>
+                        </li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="box">
+
+                {% if paymentMethods.order or paymentMethods.credit %}
+                    <div class="title">Formas de pagamento {{ icon }}</div>
+                    {% element 'snippets/payment-list' %}
+                {% endif %}
+
+                <div class="title">Selos de Seguran&ccedil;a {{ icon }}</div>
+                <ul class="security-seals flex f-wrap">                    
+
+                    <li class="google-seal">
+                        <a href="https://transparencyreport.google.com/safe-browsing/search?url={{ store.url }}" target="_blank" rel="noreferrer noopener" title="Google Safe Browsing">
+                            <span class="icon icon-shield vertical-align"></span>
+                            <span class="icon icon-google vertical-align""></span>
+
+                        </a>
+                    </li>
+
+                    {% if seals.ebit %}
+                        <li class="ebit-seal">
+                            {{ seals.ebit }}
+                        </li>
+                    {% endif %}
+
+                    {% if seals.hackersafe %}
+                        <li class="loja-protegida-seal">
+                            {{ seals.hackersafe }}
+                        </li>
+                    {% endif %}
+
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="copy">
+        <div class="container flex align-center flex-column">
+            
+            <div class="text">{{ Translation('ag_mensagem_rodape') }}</div>
+
+            <div class="tray">
+                {% element 'snippets/credits' %}
+                {% if tray.theme_configs.custom_theme_preview %}
+                    <div class="mode-preview">
+                        <a href="/mvc/store/home/reset_opencode_preview?loja={{ store.id }}">Sair modo preview</a>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+</footer>

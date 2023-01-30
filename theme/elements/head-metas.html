@@ -1,0 +1,30 @@
+{% spaceless %}
+
+    {% set custom_page = false %}
+    {% set page_details = null %}
+    {% for page in pages.custom %}
+        {% if ('empresa' in page.slug and pages.current == 'company') or (pages.current == page.slug) %}
+            {% set custom_page = true %}
+            {% set page_details = {
+                title : page.name,
+                description : page.conteudo | striptags | split('.') | first ~ '.'
+            } %}
+        {% endif %}
+    {% endfor %}
+
+    {% if custom_page %}
+
+        {{ tray.meta }}
+
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="{{ page_details.title }}" />
+        <meta property="og:description" content="{{ page_details.description }}" />
+
+    {% else %}
+
+        {{ tray.meta }}
+        <meta property="og:type" content="website"/>
+
+    {% endif %}
+
+{% endspaceless %}
